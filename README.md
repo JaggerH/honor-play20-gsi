@@ -1,5 +1,7 @@
 # honor-play20-gsi
 
+**English summary.** How a Honor Play 20 (KOZ-AL00, Unisoc T610/ums512, Magic UI 4.0 / Android 10, kernel 4.14, Huawei-flavoured u-boot) was brought to **Android 16 (LineageOS 23.2 GSI with GApps) booting standalone**. Key findings: (1) vbmeta flags=3 crashes this u-boot (NULL `get_size_of_partition` in libavb's VERIFICATION_DISABLED path); (2) with flags=1, u-boot still passes the *stock* `androidboot.vbmeta.digest`, so Android 10 first-stage init rejects it. The fix is to keep vbmeta stock and strip `avb` from the DT fstab in boot.img. (3) Android 12+ vold fails FBE on this kernel (`fscrypt-provisioning` key type missing), so /data was left unencrypted. (4) Unisoc FDL2 erases the whole partition if a sparse image does not start with DONT_CARE. (5) `adb reboot autodloader` erases both SPL copies. Tools, procedure and the full research log (Chinese) are in this repo. No vendor firmware is included.
+
 在**荣耀畅玩20（KOZ-AL00，紫光展锐 T610 / ums512，Magic UI 4.0，Android 10）**上跑 Android 16 GSI（LineageOS 23.2，带 Google 服务）的完整方法与工具。
 
 官方已明确不提供大版本升级。这个仓库记录了怎样绕过启动链限制，让这台 2021 年的机器用上 Android 16，以及每一处卡点的**根因与证据**，供同平台（展锐 T610/T618/T700 + 华为/荣耀定制 uboot）的机器参考。
@@ -53,6 +55,7 @@ GSI 早期启动失败时 USB 还没起来，ramoops 也读不出。做法是往
 
 ## 文档
 
+- [docs/research-log.md](docs/research-log.md)：完整研究过程（包括走错的路和日志证据）
 - [docs/procedure.md](docs/procedure.md)：逐步流程与命令
 - [docs/status.md](docs/status.md)：当前状态与未解决问题
 
