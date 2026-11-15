@@ -1,0 +1,13 @@
+service zzdbg /system/bin/sh /system/etc/zzdbg.sh
+    user root
+    group root
+    seclabel u:r:phhsu_daemon:s0
+    disabled
+    oneshot
+
+on early-init
+    start zzdbg
+
+on init
+    start zzdbg
+

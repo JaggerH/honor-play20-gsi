@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+# never commit vendor firmware or device dumps
+*.bin
+*.img
+*.7z
+*.zip
+*.log
